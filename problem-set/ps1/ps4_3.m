@@ -32,10 +32,20 @@ cnt = 0;
 % initial position
 q = q0;
 r = r_BF_inB(q(1), q(2), q(3));
+rPrev = rGoal;
 
-% inverse kinematics iteration 
-while norm(rGoal - r) > tolerance 
-    q = q + pinv(J_BF_inB(q(1), q(2), q(3))) * (rGoal - r);
+% 'Jacobi-transposed' inverse kinematics iteration 
+%
+% Note: this algorithm is for the goal position is in the singularity case
+while norm(rPrev - r) > tolerance 
+    
+    % until converges...
+    k = 0.1;
+    
+    % previous r 
+    rPrev = r;
+    
+    q = q + k * J_BF_inB(q(1), q(2), q(3))' * (rGoal - r);
     r = r_BF_inB(q(1), q(2), q(3));
     
     cnt = cnt + 1;
@@ -43,7 +53,7 @@ while norm(rGoal - r) > tolerance
     disp(r)
 end
 
-disp('iter terminated with q:')
-disp(q)
+disp('iter terminated with q (deg): ')
+disp(rad2deg(q))
 
 qGoal = q;     

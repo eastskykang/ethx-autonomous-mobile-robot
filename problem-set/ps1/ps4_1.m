@@ -43,7 +43,7 @@ while norm(rGoal - r) > tolerance
     disp(r)
 end
 
-disp('iter terminated with q:')
-disp(q)
+disp('iter terminated with q (deg):')
+disp(rad2deg(q))
 
 qGoal = q;     
