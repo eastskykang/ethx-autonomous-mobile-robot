@@ -25,8 +25,53 @@ alpha = normalizeAngle(alpha);
 % parameters.useConstantSpeed: Turn on constant speed option
 % parameters.constantSpeed: The speed used when constant speed option is on
 
-vu = TODO; % [m/s]
-omega = TODO; % [rad/s]
+% closed loop 
+Kalpha = parameters.Kalpha;
+Kbeta = parameters.Kbeta;
+Krho = parameters.Krho;
+
+% state = [rho, alpha, beta]'
+beta = - theta - alpha;
+beta = normalizeAngle(beta);
+
+% without backward allowance and constant speed option
+vu = Krho * rho; % [m/s]
+omega = Kalpha * alpha + Kbeta * beta; % [rad/s]
+
+if parameters.backwardAllowed
+    % two case
+    % case1: goal point is infront of robot
+    % case2: goal point is behind robot
+    
+    if abs(alpha) <= pi()/2
+        % infront of robot
+        % no difference
+    else
+        % behind robot
+        alpha = lambda - theta - pi;
+        alpha = normalizeAngle(alpha);
+        beta = thetag - lambda - pi;
+        
+        vu = - Krho * rho;
+        omega = Kalpha * alpha + Kbeta * beta;
+    end
+end
+
+if parameters.useConstantSpeed
+    % if velocity is not zero, use constant speed instead
+    % (also angular velocity)
+
+    % tolerance needed (for convergence)
+    tol = 1e-6;
+    absVel = abs(vu);
+    
+    if absVel > tol
+        % preserve sign        
+        vu = vu/absVel*parameters.constantSpeed;
+        
+        % for convergence (when absVel is small, turn fast)
+        omega = omega/absVel*parameters.constantSpeed;
+    end
 
 end
 
