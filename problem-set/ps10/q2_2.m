@@ -49,6 +49,7 @@ while ~consistent
         BinMinHeap(idx) = BinMinHeap(idx * 2);
         BinMinHeap(idx * 2) = temp;
 
+        idx = idx * 2;
     else
         consistent = true;
     end
