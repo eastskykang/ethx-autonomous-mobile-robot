@@ -13,8 +13,8 @@ r_BF_inB = [...
 % determine the foot point Jacobian J_BF_inB=d(r_BF_inB)/dq
 J_BF_inB = [...
     0,                                                  -cos(beta + gamma) - cos(beta),                     -cos(beta + gamma);
-    cos(alpha) * (cos(beta + gamma) + cos(beta) + 1),   -sin(alpha) * (-sin(beta + gamma) - sin(beta)),     sin(alpha) * (-sin(beta + gamma));
-    -sin(alpha) * (cos(beta + gamma) + cos(beta) + 1),  -cos(alpha) * (-sin(beta + gamma) - sin(beta)),     cos(alpha) * (sin(beta + gamma))];
+    cos(alpha) * (cos(beta + gamma) + cos(beta) + 1),   sin(alpha) * (-sin(beta + gamma) - sin(beta)),      sin(alpha) * (-sin(beta + gamma));
+    sin(alpha) * (cos(beta + gamma) + cos(beta) + 1),   -cos(alpha) * (-sin(beta + gamma) - sin(beta)),     cos(alpha) * (sin(beta + gamma))];
 
 % or using the following
 % J_BF_inB = jacobian(r_BF_inB, q)
