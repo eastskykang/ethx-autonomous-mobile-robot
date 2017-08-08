@@ -12,7 +12,7 @@ num_thetas = numel(theta);
 num_rhos   = numel(rho);
         
 %% Initialize the voting array with the appropriate size and values        
-Hough_space = 
+Hough_space = zeros(num_rhos, num_thetas); 
 
 %% perform hough transform
 for x = 1:rows
@@ -24,7 +24,8 @@ for x = 1:rows
                 rho_index = round(r + num_rhos/2);                 
         
         		%% Update the relevant element of Hough_space
-                Hough_space
+                Hough_space(rho_index, theta_index) = ...
+                    Hough_space(rho_index, theta_index) + 1;
             end
         end
     end
