@@ -10,11 +10,11 @@ gy = [1 0 -1]./sqrt(2);
 F = [1 4 6 4 1; 4 16 24 16 4; 6 24 36 24 6; 4 16 24 16 4; 1 4 6 4 1];
 F = F./norm(F);
 % use 'conv2' and the filters given above to detect the edges in lena
-smooth_lena = conv2(F, lena);
+smooth_lena = conv2(lena, F, 'same');
 
 % derivatives
-vert_lena = conv2(gy, padarray(lena, [1, 0]));
-hor_lena = conv2(gx, padarray(lena, [0, 1]));      
+vert_lena = conv2(smooth_lena, gx, 'same');
+hor_lena = conv2(smooth_lena, gy, 'same');      
 
 % final
 final_lena = sqrt(vert_lena.^2 + hor_lena.^2);
