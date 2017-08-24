@@ -1,0 +1,62 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{romannum}
+\usepackage{dsfont}
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+ 
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+%If you want to title your bold things something different just make another thing exactly like this but replace "problem" with the name of the thing you want, like theorem or lemma or whatever
+ 
+\begin{document}
+ 
+%\renewcommand{\qedsymbol}{\filledbox}
+%Good resources for looking up how to do stuff:
+%Binary operators: http://www.access2science.com/latex/Binary.html
+%General help: http://en.wikibooks.org/wiki/LaTeX/Mathematics
+%Or just google stuff
+ 
+\title{Perception \Romannum{4}: Place Recognition \& Line Fitting}
+\date{\vspace{-20mm}}
+\maketitle
+
+\section*{Line fitting with RANSAC} 
+
+\subsection*{RANSAC iterations}
+
+RANSAC is one of the most commonly used technique for fitting a model to a given dataset. In the line fitting RANSAC paradigm that we have studied this week, on every iteration we select 2 points from the set randomly to hypothesize a candidate line. Following a certain number iterations the line with the biggest agreement in the set is selected to be the final answer. But how many RANSAC iterations are ``enough"? This Unit is designed to enhance your understanding of how to work out the number of RANSAC iterations and how this is affected by the parameters involved.
+
+\subsubsection*{Problem 1}
+
+Suppose that you are given a point cloud of 1000 points, \textbf{20\% of which are inliers} and a function ``one\_RANSAC\_iteration", which performs one iteration of RANSAC on a given set of points. \\
+
+\noindent How many times do you need to call this function (i.e. how many RANSAC iterations are required) to find at least one set of all inliers with probability p = 95\% ? You may assume that the set of points is large such that the portion of outliers do not change when removing a point. \\ 
+
+
+\subsubsection*{Answer}
+
+The number of RANSAC iteration is as follows:
+
+\begin{equation}
+	k = \frac{log (1 - p)}{log (1 - w^2)} 
+\end{equation}
+
+\noindent where success probability $p = 0.95$, inlier ration $w = 0.2$ and the number of data points $n = 1000$ (the number of RANSAC iteration is independent on the number of data points). \\
+
+\noindent The number of iterations required is: $k \geq 73.3$
+
+\pagebreak
+
+\subsubsection*{Problem 2}
+
+If instead of selecting a pre-specified number of iterations, we performed RANSAC iterations indefinitely then all the possible line candidates would have been checked. How may possible line candidates are there in this dataset?
+
+\subsubsection*{Answer}
+
+Exhaustive search takes ${{n}\choose{2}}$ candidates thus ${{1000}\choose{2}} = \frac{1000 \times 999}{2} = 499500$ 
+
+
+\end{document}

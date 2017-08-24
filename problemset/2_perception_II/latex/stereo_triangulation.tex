@@ -1,0 +1,198 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{romannum}
+\usepackage{dsfont}
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+ 
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+%If you want to title your bold things something different just make another thing exactly like this but replace "problem" with the name of the thing you want, like theorem or lemma or whatever
+ 
+\begin{document}
+ 
+%\renewcommand{\qedsymbol}{\filledbox}
+%Good resources for looking up how to do stuff:
+%Binary operators: http://www.access2science.com/latex/Binary.html
+%General help: http://en.wikibooks.org/wiki/LaTeX/Mathematics
+%Or just google stuff
+ 
+\title{Perception \Romannum{2}: Stereo Triangulation}
+\date{\vspace{-20mm}}
+\maketitle
+
+\section*{Stereo Tiangulation} 
+
+(Note that all the answers should be scalar values with two decimal points.) \vspace{5mm} \\ 
+Consider a camera with the specifications as below:
+
+\begin{itemize}
+	\item Field of view along the horizontal axis (X): $60^\circ$
+	\item Field of view along the vertical axis (Y): $45^\circ$
+	\item Image plane size: 640 pixels along X axis and 480 pixels along Y axis
+\end{itemize}
+ 
+\subsection*{Problem 1}
+
+Given the information above:
+
+\begin{itemize}
+	\item Calculate the focal length (in pixels) along X axis.
+	\item Calculate the focal length (in pixels) along Y axis.
+	\item And construct the camera intrinsic matrix (K)
+\end{itemize}
+
+\subsubsection*{Answer}
+ 
+Let $\alpha_x$ and $\alpha_y$ are focal lengths in pixel. 
+
+\begin{align}
+	\alpha_x \cdot \tan 30 ^\circ &= 640 / 2 \quad \text{px} \\
+	\alpha_y \cdot \tan 22.5 ^\circ &= 480 / 2 \quad \text{px}
+\end{align}
+
+\noindent Thus, $\alpha_x = 554.2 \text{px}$, $\alpha_y = 579.4 \text{px}$ \\
+
+\noindent Camera intrinsic matrix is defined as follows:
+
+\begin{equation}
+	K = 
+	\begin{bmatrix}
+		\alpha_x 	& 0			& u_0 \\
+		0			& \alpha_y 	& v_0 \\
+		0			& 0			& 1
+	\end{bmatrix}
+\end{equation}
+
+\noindent Assuming $u_0$ and $v_0$ are exactly on the middle of image plane, 
+
+\begin{equation}
+	K = 
+	\begin{bmatrix}
+		554.26 		& 0			& 320 \\
+		0			& 579.41 	& 240 \\
+		0			& 0			& 1
+	\end{bmatrix}
+\end{equation}
+
+\subsection*{Problem 2}
+
+The image point p has pixel coordinates (360, 302). If we translate the camera by the vector $T=[0.2,0.0,0.0]^T$ meters and take another picture, the point appears at image position (330, 302). Assuming that the first camera frame acts as the world reference frame, estimate the position of point P in 3D coordinates.
+
+\subsubsection*{Answer}
+
+By perspective projection equation:
+
+\begin{equation}
+	\lambda 
+	\begin{bmatrix}
+		u \\
+		v \\
+		1
+	\end{bmatrix}
+	= K
+	\underbrace{
+		\begin{bmatrix}
+			R_{CW} & {}_{C}T_{CW}
+		\end{bmatrix}
+	}_\text{Extrinsic matrix}
+	\begin{bmatrix}
+		X_w \\
+		Y_w \\
+		Z_w \\
+		1
+	\end{bmatrix}
+\end{equation}
+
+\noindent Where $R_{CW}$ is a rotational matrix of world frame with respect to camera frame and ${}_{C}T_{cw}$ is a vector from origin of camera frame $c$ to origin of word frame $w$ with respect to camera frame. \\
+
+\noindent For initial pose:
+
+\begin{equation}
+	\begin{bmatrix}
+		R_{CW} & {}_{C}T_{CW}
+	\end{bmatrix}
+	= 
+	\begin{bmatrix}
+		1	&	0	& 	0	&	0 \\
+		0	&	1	&	0	&	0 \\
+		0	&	0	&	1	&	0 
+	\end{bmatrix}
+\end{equation} 
+
+\noindent After the translation: 
+
+\begin{equation}
+	\begin{bmatrix}
+		R_{CW} & {}_{C}T_{CW}
+	\end{bmatrix}
+	= 
+	\begin{bmatrix}
+		1	&	0	& 	0	&	-0.2 \\
+		0	&	1	&	0	&	0 \\
+		0	&	0	&	1	&	0 
+	\end{bmatrix}
+\end{equation} 
+
+\noindent Note that the sign of T becomes negative since ${}_{C}T_{cw} = - R_{CW} \cdot {}_{W}T_{wc}$ where ${}_{W}T_{wc} = T$ and $R_{CW} = \mathds{1}$ in this case. \\
+
+\noindent By solving following equation :
+
+\begin{align}
+	\lambda 
+	\begin{bmatrix}
+		360 \\
+		302 \\
+		1
+	\end{bmatrix}
+	= 
+	\begin{bmatrix}
+		554.26 		& 0			& 320 \\
+		0			& 579.41 	& 240 \\
+		0			& 0			& 1
+	\end{bmatrix}
+	\begin{bmatrix}
+		1	&	0	& 	0	&	0 \\
+		0	&	1	&	0	&	0 \\
+		0	&	0	&	1	&	0 
+	\end{bmatrix}
+	\begin{bmatrix}
+		X_w \\
+		Y_w \\
+		Z_w \\
+		1
+	\end{bmatrix} \\
+	\lambda 
+	\begin{bmatrix}
+		330 \\
+		302 \\
+		1
+	\end{bmatrix}
+	= 
+	\begin{bmatrix}
+		554.26 		& 0			& 320 \\
+		0			& 579.41 	& 240 \\
+		0			& 0			& 1
+	\end{bmatrix}
+	\begin{bmatrix}
+		1	&	0	& 	0	&	-0.2 \\
+		0	&	1	&	0	&	0 \\
+		0	&	0	&	1	&	0 
+	\end{bmatrix}
+	\begin{bmatrix}
+		X_w \\
+		Y_w \\
+		Z_w \\
+		1
+	\end{bmatrix}
+\end{align}
+
+\noindent We get 
+
+\begin{equation}
+	[X_w, Y_w, Z_w]^T = [0.266, 0.395, 3.69]^T
+\end{equation}
+
+\end{document}

@@ -1,0 +1,49 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{romannum}
+\usepackage{dsfont}
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+ 
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+%If you want to title your bold things something different just make another thing exactly like this but replace "problem" with the name of the thing you want, like theorem or lemma or whatever
+ 
+\begin{document}
+ 
+%\renewcommand{\qedsymbol}{\filledbox}
+%Good resources for looking up how to do stuff:
+%Binary operators: http://www.access2science.com/latex/Binary.html
+%General help: http://en.wikibooks.org/wiki/LaTeX/Mathematics
+%Or just google stuff
+ 
+\title{Perception \Romannum{4}: Place Recognition \& Line Fitting}
+\date{\vspace{-20mm}}
+\maketitle
+
+\section*{Place Recognition using the Vocabulary Tree} 
+
+\subsection*{Put the steps/stages in the correct order}
+
+In this week’s material we have studied Place Recognition and how we construct, populate and use the Vocabulary Tree to identify candidate matches for a given query image. This unit aims to exercise your understanding of the intermediate steps involved in this process.
+
+\subsubsection*{Answer}
+
+\begin{enumerate}
+	\item Extract image features from the image collection
+	\item Populate the descriptors space with the descriptors of the extracted features
+	\item Perform k-means clustering (in the descriptors’ space to construct visual words)
+	\item Extract features from the Model images
+	\item Identify the visual word corresponding to an extracted feature (drop the corresponding feature descriptor down the tree)
+	\item Link the visual word to the Model image it appears in
+	\item The Vocabulary Tree is ready
+	\item Extract features from the Test image
+	\item Identify the visual word corresponding to an extracted feature (drop the corresponding feature descriptor down the tree)
+	\item Look-up the visual word in the inverted-file database
+	\item Increment the element of the voting array corresponding to the obtained visual word (and take the weighting of each word into account)
+	\item Select most voted image as the best candidate matching the test image
+\end{enumerate}
+
+\end{document}
