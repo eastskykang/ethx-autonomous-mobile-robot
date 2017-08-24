@@ -8,6 +8,5 @@ Written by kangd@ethz.ch
 
 ## Links
 
-- [ETH Autonomous Mobile Robots course website](http://www.asl.ethz.ch/education/lectures/autonomous_mobile_robots/spring-2017.html)
-- [ETHx Autonomou Mobile Robots course website](https://www.edx.org/course/autonomous-mobile-robots-ethx-amrx-2)
-
+- [ETH Autonomous Mobile Robots Spring 2017 lecture](http://www.asl.ethz.ch/education/lectures/autonomous_mobile_robots/spring-2017.html)
+- [ETHx Autonomou Mobile Robots course](https://www.edx.org/course/autonomous-mobile-robots-ethx-amrx-2)
