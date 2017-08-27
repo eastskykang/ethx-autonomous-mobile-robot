@@ -37,7 +37,7 @@ while ~isempty(BinMinHeap) && ~goalReached
     SolutionMap(CurrState.pos(1),CurrState.pos(2)) = CurrState.g;
     
     % terminate search in case currState is the goal
-    if isequal(CurrState.pos, SearchGoal)
+    if CurrState.pos == SearchGoal
         goalReached = true;
         continue;
     end
