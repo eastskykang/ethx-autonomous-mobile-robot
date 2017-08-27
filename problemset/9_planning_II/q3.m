@@ -34,10 +34,10 @@ while ~isempty(BinMinHeap) && ~goalReached
         continue;
     end
     
-    SolutionMap(CurrState.pos(1),CurrState.pos(2)) = CurrState.key;
+    SolutionMap(CurrState.pos(1),CurrState.pos(2)) = CurrState.g;
     
     % terminate search in case currState is the goal
-    if CurrState.pos == SearchGoal
+    if isequal(CurrState.pos, SearchGoal)
         goalReached = true;
         continue;
     end
@@ -72,6 +72,9 @@ end
 imagesc(SolutionMap)
 set(gca,'dataAspectRatio',[1 1 1])
 
+
+%% SUBFUNCTIONS
+% push to heap
 function [BinMinHeap] = HeapPush(new, BinMinHeap)
     
     %insert ElementsToInsert(n) at the end of the heap
@@ -99,6 +102,7 @@ function [BinMinHeap] = HeapPush(new, BinMinHeap)
     end
 end
 
+% pop from heap
 function [ExtractedElement, BinMinHeap] = HeapPop(BinMinHeap)
     % extract the minimal element from the heap and store it in "ExtractedElement"
     ExtractedElement = BinMinHeap(1);
